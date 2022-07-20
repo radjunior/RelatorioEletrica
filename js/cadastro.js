@@ -28,3 +28,13 @@ document.getElementById("btnSalvar").addEventListener("click", function(event) {
         confirm("Cadastro realizado com sucesso!")
     }
 });
+
+document.getElementById("rbInterna").addEventListener("click", function(event) {
+    this.checked = true;
+    document.getElementById("rbExterna").checked = false;
+});
+
+document.getElementById("rbExterna").addEventListener("click", function(event) {
+    this.checked = true;
+    document.getElementById("rbInterna").checked = false;
+});

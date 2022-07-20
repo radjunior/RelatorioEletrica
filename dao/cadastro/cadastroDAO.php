@@ -13,20 +13,21 @@ $rbExterna = $_POST['rbExterna'] ?? null;
 $flDocManutencao = $_FILES['flDocManutencao'];
 $tipoManutencao = '';
 
-if ($rbInterna == 'on')
+if ($rbInterna == 'on') {
     $tipoManutencao = 'interna';
-else
+} else {
     $tipoManutencao = 'externa';
-
-if ($flDocManutencao['error'])
+}
+if ($flDocManutencao['error']) {
     die("Falha ao enviar o arquivo");
+} 
 
 $pasta = "C:/xampp/htdocs/Temp/relatorio-eletrica/anexos/";
 $nomeArquivo = $flDocManutencao['name'];
 $novoNome = uniqid();
 $extensao = strtolower(pathinfo($nomeArquivo, PATHINFO_EXTENSION));
 
-if ($extensao != 'jpg' && $extensao != 'png')
+if ($extensao != 'jpg' && $extensao != 'png' && $extensao != 'pdf' && $extensao != 'zip' && $extensao != 'rar')
     die("Tipo de arquivo não aceito!");
 
 $statusEnvioArquivo = move_uploaded_file($flDocManutencao['tmp_name'], $pasta . $novoNome . "." . $extensao);
@@ -34,26 +35,28 @@ $path = $pasta . $novoNome . "." . $extensao;
 
 try {
     $conn = ConexaoLocal::getConnection();
-    $query = "INSERT INTO MANUTENCAO
-                (TAG, 
-                SETOR, 
-                DESCRICAO, 
-                POTENCIA, 
-                ROTACAO, 
-                DATA_MANUTENCAO,
-                TIPO_MANUTENCAO,
-                PATH_ANEXO,
-                USUARIO) 
-                VALUES 
-                (:col01, 
-                :col02, 
-                :col03, 
-                :col04, 
-                :col05, 
-                :col06,
-                :col07,
-                :col08,
-                :col09)";
+    $query = "INSERT INTO 
+                MANUTENCAO (
+                    TAG, 
+                    SETOR, 
+                    DESCRICAO, 
+                    POTENCIA, 
+                    ROTACAO, 
+                    DATA_MANUTENCAO,
+                    TIPO_MANUTENCAO,
+                    PATH_ANEXO,
+                    USUARIO
+                ) VALUES (
+                    :col01, 
+                    :col02, 
+                    :col03, 
+                    :col04, 
+                    :col05, 
+                    :col06,
+                    :col07,
+                    :col08,
+                    :col09
+                    )";
     $stmt = $conn->prepare($query);
     $stmt->execute(array(
         ':col01' => $tag,

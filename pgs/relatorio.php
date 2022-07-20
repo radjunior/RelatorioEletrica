@@ -1,3 +1,7 @@
+<?php
+require_once "../dao/app/relatorioDAO.php";
+$stmt = RelatorioDAO::getManutencao();
+?>
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -39,39 +43,21 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <th>1</th>
-                        <th>15415F</th>
-                        <th>INSTRUMENTAÇÃO</th>
-                        <th>PORCA</th>
-                        <th>1254,12 CV</th>
-                        <th>523 RPM</th>
-                        <th>30/07/2022</th>
-                        <th>29/06/2022</th>
-                        <th>file.zip</th>
-                    </tr>
-                    <tr>
-                        <th>2</th>
-                        <th>15489D</th>
-                        <th>AUTOMAÇÃO</th>
-                        <th>PARAFUSO</th>
-                        <th>1264,45 CV</th>
-                        <th>451 RPM</th>
-                        <th>30/07/2022</th>
-                        <th>29/06/2022</th>
-                        <th>file.zip</th>
-                    </tr>
-                    <tr>
-                        <th>3</th>
-                        <th>94875S</th>
-                        <th>AUTOMAÇÃO</th>
-                        <th>VALVULA ESCAPE</th>
-                        <th>9845,15 CV</th>
-                        <th>515 RPM</th>
-                        <th>30/07/2022</th>
-                        <th>29/06/2022</th>
-                        <th>file.zip</th>
-                    </tr>
+                    <?php foreach ($stmt as $item) { 
+                        $output  = str_replace("C:/xampp/htdocs/", "", $item['PATH_ANEXO']);
+                        ?>
+                        <tr>
+                            <td><?php echo $item['ID'] ?></td>
+                            <td><?php echo $item['TAG'] ?></td>
+                            <td><?php echo $item['SETOR'] ?></td>
+                            <td><?php echo $item['DESCRICAO'] ?></td>
+                            <td><?php echo $item['POTENCIA'] ?></td>
+                            <td><?php echo $item['ROTACAO'] ?></td>
+                            <td><?php echo $item['DATA_MANUTENCAO'] ?></td>
+                            <td><?php echo $item['DATA_INSERCAO'] ?></td>
+                            <td><a target="_blank" href="http://localhost/<?php echo $output?>">Anexo</a> </td>
+                        </tr>
+                    <?php } ?>
                 </tbody>
             </table>
         </div>
